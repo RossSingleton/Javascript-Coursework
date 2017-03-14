@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+<title>Ross' Mug Shop</title>
+
+<script type="text/javascript">
+    // Fields:
+    // Card number, must be 16 digits
+    // Expiration Date, equal or greater than 2017, not empty, month integer between 1-12
+    // Cardholder's name, not empty
+    // Security code, 3 digit number
+
+	function isNumber(val) {
+		return !isNaN(parseFloat(val)) && isFinite(val);
+	}
+
+	function validateForm() {
+		var cardNum = document.forms["form"]["cardNum"].value;
+		var expDateOne = document.forms["form"]["expDateOne"].value;
+		var expDateTwo = document.forms["form"]["expDateTwo"].value;
+		var cardName = document.forms["form"]["cardName"].value;
+		var secuityNum = document.forms["form"]["securityNum"].value;
+		if (isNumber(cardNum) === false || cardNum.length != 16) {
+			changeInfo("Card Number must be 16 digits", "cardNumHelp");
+		}
+		if (expDateOne < 1 || expDateOne > 12 || !expDateOne || isNumber(expDateOne) === false || expDateOne.length != 2) {
+			changeInfo("You must enter a month between 1 and 12", "expDateOneHelp");
+		}
+		if (expDateTwo < 17 || !expDateTwo || isNumber(expDateTwo) === false || expDateTwo.length != 2) {
+			changeInfo("You must enter a year equal to 17 or greater", "expDateTwoHelp");
+		}
+		if (!cardName) {
+			changeInfo("You must enter the name on the front of the card", "cardNameHelp");
+		}
+		if (!securityNum || securityNum.length != 3 || isNumber(securityNum) === false) {
+			changeInfo("You must enter the 3 digit security number on the back of the card", "securityNumHelp");
+		}
+		return false;
+	}
+
+	function pageLoad(text, textId) {
+        var element = document.createElement("element");
+        var node = document.getElementById(textId);
+        var userText = document.createTextNode(text);
+        element.appendChild(userText);
+        node.appendChild(element);
+    }
+
+    function changeInfo(text, nodeId) {
+        var node = document.getElementById(nodeId);
+        if (node.hasChildNodes() === false) {
+            pageLoad('', nodeId);
+        }
+        var userText = document.createTextNode(text);
+        var childNodes = node.childNodes[0];
+        node.replaceChild(userText, childNodes);
+    }
+</script>
+
+</head>
+<body id="body" onLoad="pageLoad(' ', 'body')">
+
+<h1>Ross' Mug Shop</h1>
+
+<h2>Please Enter Your Card Details: </h2>
+
+<form id="form" name="form" onSubmit="return validateForm()">
+	<input name="cardNum" id="cardNum" type=text placeholder="Card Number" onFocus="changeInfo('Please enter your 16 digit Card Number.', 'helpInfo')" onBlur="changeInfo(' ', 'helpInfo')"/><br>
+	<p id="cardNumHelp"></p>
+	<br>
+
+	<input name="experationDateOne" id="expDateOne" placeholder="MM" onFocus="changeInfo('Please enter the experation month', 'helpInfo')" onBlur="changeInfo(' ', 'helpInfo')"/><br>
+	<p id="expDateOneHelp"></p>
+	<br>
+	<input name="experationDateTwo" id="expDateTwo" placeholder="YY" onFocus="changeInfo('Please enter the experation year', 'helpInfo')" onBlur="changeInfo(' ', 'helpInfo')"/><br>
+	<p id="expDateTwoHelp"></p>
+	<br>
+
+	<input name="cardName" id="cardName" placeholder="Card Name" onFocus="changeInfo('Please enter the name on the card', 'helpInfo')" onBlur="changeInfo(' ', 'helpInfo')"/><br>
+	<p id="cardNameHelp"></p>
+	<br>
+
+	<input name="securityNum" id="securityNum" placeholder="CVC" onFocus="changeInfo('Please enter the CVC on the back of the card', 'helpInfo')" onBlur="changeInfo(' ', 'helpInfo')"/><br>
+	<p id="securityNumHelp"></p>
+	<br>
+
+	<p id="helpInfo"></p><br>
+	<input id="submit" type="submit"/>
+</form>
+</body>
+</html>
